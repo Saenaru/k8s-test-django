@@ -4,13 +4,12 @@ kind: Service
 metadata:
   name: django-k8s-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: django-k8s
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30000
 
 ---
 apiVersion: apps/v1
@@ -35,9 +34,9 @@ spec:
             - containerPort: 80
           env:
             - name: DEBUG
-              value: "True"
+              value: "False"
             - name: ALLOWED_HOSTS
-              value: "*"
+              value: "star-burger.test,localhost,127.0.0.1"
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
