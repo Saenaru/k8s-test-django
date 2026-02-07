@@ -135,3 +135,11 @@ kubectl apply -f django-secrets.yaml
 kubectl apply -f django-k8s.yaml
 kubectl apply -f ingress.yaml
 ```
+
+## Очистка устаревших сессий
+
+**Применение конфигурации:**
+
+```shell
+kubectl apply -f cronjob.yaml
+```
