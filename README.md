@@ -115,7 +115,7 @@ kubectl apply -f cronjob.yaml
 minikube service django-k8s-service
 ```
 
-## 🚀 Запуск в Kubernetes (Ingress)
+## Запуск в Kubernetes (Ingress)
 
 Проект настроен для работы через **Ingress Controller**, что позволяет открывать сайт по красивому домену `http://star-burger.test` на стандартном 80 порту.
 
