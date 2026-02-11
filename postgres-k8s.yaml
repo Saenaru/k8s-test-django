@@ -37,9 +37,13 @@ spec:
         image: postgres:13-alpine
         ports:
         - containerPort: 5432
-        envFrom:
-        - secretRef:
-            name: django-app-secrets
+        env:
+        - name: POSTGRES_DB
+          value: "django_db"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "onikun228"
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-data
