@@ -80,20 +80,36 @@ $ docker compose build web
 
 Этот проект можно запустить в локальном кластере Kubernetes (Minikube).
 
-1. **Создайте секреты для подключения к БД:**
+1. **Запуск кластера и загрузка образа**
+
+```shell
+minikube image load django_app
+```
+
+2. **Секреты и База данных:**
    
 В файле `django-secrets.yaml` должны быть указаны верные `DATABASE_URL` (с IP вашего компьютера) и `SECRET_KEY`.
 ```shell
 kubectl apply -f django-secrets.yaml
+kubectl apply -f postgres-k8s.yaml
 ```
 
-2. **Запустите приложение:**
+Нужно подождать пару минут, пока база данных перейдет в статус Running.
+
+3. **Миграции:**
+
+```shell
+kubectl apply -f migrate-job.yaml
+```
+
+4. **Приложение и фоновые задачи:**
 
 ```shell
 kubectl apply -f django-k8s.yaml
+kubectl apply -f cronjob.yaml
 ```
 
-3. **Откройте сайт:**
+5. **Доступ к сайту**
 
 ```shell
 minikube service django-k8s-service
