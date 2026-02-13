@@ -4,6 +4,29 @@
 
 Внутри контейнера Django приложение запускается с помощью Nginx Unit, не путать с Nginx. Сервер Nginx Unit выполняет сразу две функции: как веб-сервер он раздаёт файлы статики и медиа, а в роли сервера-приложений он запускает Python и Django. Таким образом Nginx Unit заменяет собой связку из двух сервисов Nginx и Gunicorn/uWSGI. [Подробнее про Nginx Unit](https://unit.nginx.org/).
 
+
+## Структура директорий
+
+```text
+k8s-test-django/
+├── backend_main_django/
+│   ├── src/
+│   │   ├── webapp/
+│   │   └── manage.py
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── unit_config.json
+├── k8s-base/
+│   ├── 01-config/
+│   ├── 02-database/
+│   ├── 03-app/
+│   └── 04-jobs/
+├── k8s-extras/
+│   └── ingress/
+├── docker-compose.yml
+└── README.md
+```
+
 ## Как подготовить окружение к локальной разработке
 
 Код в репозитории полностью докеризирован, поэтому для запуска приложения вам понадобится Docker. Инструкции по его установке ищите на официальных сайтах:
@@ -80,39 +103,36 @@ $ docker compose build web
 
 Этот проект можно запустить в локальном кластере Kubernetes (Minikube).
 
+
 1. **Запуск кластера и загрузка образа**
 
 ```shell
 minikube image load django_app
 ```
 
-2. **Секреты и База данных:**
-   
-В файле `django-secrets.yaml` должны быть указаны верные `DATABASE_URL` (с IP вашего компьютера) и `SECRET_KEY`.
-```shell
-kubectl apply -f django-secrets.yaml
-kubectl apply -f postgres-k8s.yaml
-```
-
-Нужно подождать пару минут, пока база данных перейдет в статус Running.
-
-3. **Миграции:**
+2. **Развертывание приложения:**
 
 ```shell
-kubectl apply -f migrate-job.yaml
+kubectl apply -R -f k8s-base/
 ```
 
-4. **Приложение и фоновые задачи:**
+Проверьте, что все поды перешли в статус Running, а задача миграции завершилась статусом Completed:
 
 ```shell
-kubectl apply -f django-k8s.yaml
-kubectl apply -f cronjob.yaml
+kubectl get pods -w
 ```
 
-5. **Доступ к сайту**
+
+3. **Доступ к сайту**
 
 ```shell
 minikube service django-k8s-service
+```
+
+4. **Создание администратора**
+
+```shell
+kubectl exec -it <ИМЯ_ПОДА_DJANGO> -- python manage.py createsuperuser
 ```
 
 ## Запуск в Kubernetes (Ingress)
@@ -149,7 +169,7 @@ kubectl apply -f django-secrets.yaml
 3. Запуск приложения
 ```
 kubectl apply -f django-k8s.yaml
-kubectl apply -f ingress.yaml
+kubectl apply -f k8s-extras/ingress/
 ```
 
 ## Очистка устаревших сессий

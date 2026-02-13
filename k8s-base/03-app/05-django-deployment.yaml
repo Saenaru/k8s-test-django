@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-k8s-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-k8s-project
+  template:
+    metadata:
+      labels:
+        app: django-k8s-project
+    spec:
+      containers:
+      - name: django-app
+        image: django_app
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: django-app-secrets
