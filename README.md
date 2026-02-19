@@ -16,15 +16,19 @@ k8s-test-django/
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── unit_config.json
-├── k8s-base/
-│   ├── 01-config/
-│   ├── 02-database/
-│   ├── 03-app/
-│   └── 04-jobs/
-├── k8s-extras/
-│   └── ingress/
 ├── docker-compose.yml
-└── README.md
+├── README.md
+└── k8s/
+    ├── minikube/
+    │   ├── k8s-base/
+    │   │   ├── 01-config/
+    │   │   ├── 02-database/
+    │   │   ├── 03-app/
+    │   │   └── 04-jobs/
+    │   └── k8s-extras/
+    │       └── ingress/
+    ├── yc-edu-daniil-vdovin/
+    └── yc-dev-second/
 ```
 
 ## Как подготовить окружение к локальной разработке
@@ -113,7 +117,7 @@ minikube image load django_app
 2. **Развертывание приложения:**
 
 ```shell
-kubectl apply -R -f k8s-base/
+kubectl apply -R -f k8s/minikube/k8s-base/
 ```
 
 Проверьте, что все поды перешли в статус Running, а задача миграции завершилась статусом Completed:

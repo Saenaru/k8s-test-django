@@ -1,0 +1,1 @@
+Манифесты для моего namespace в Yandex Cloud
