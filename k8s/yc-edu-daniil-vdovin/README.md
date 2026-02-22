@@ -9,3 +9,15 @@
 kubectl apply -f nginx-service.yaml -n edu-daniil-vdovin
 kubectl apply -f nginx-deployment.yaml -n edu-daniil-vdovin
 ```
+
+## Как подготовить dev окружение
+
+Для безопасного подключения к внешней базе данных Managed PostgreSQL требуется SSL-сертификат.
+
+### Создание секрета с сертификатом
+Скачайте корневой сертификат и создайте из него Secret в Kubernetes:
+
+```bash
+# Пример создания секрета из файла
+kubectl create secret generic postgres --from-file=root.crt=./root.crt -n edu-daniil-vdovin
+```
