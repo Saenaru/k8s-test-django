@@ -5,6 +5,7 @@
 
 ## Ссылки проекта
 * **Работающая версия сайта:** [https://edu-daniil-vdovin.yc-sirius-dev.pelid.team/](https://edu-daniil-vdovin.yc-sirius-dev.pelid.team/)
+* **Инфраструктурный реестр:** [https://sirius-env-registry.website.yandexcloud.net/edu-daniil-vdovin.html](https://sirius-env-registry.website.yandexcloud.net/edu-daniil-vdovin.html)
 
 ## Как задеплоить код
 
