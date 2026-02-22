@@ -1,3 +1,11 @@
+# k8s-test-django: Production Deployment (Yandex Cloud)
+
+Этот репозиторий содержит конфигурацию для развертывания проекта Star-k8s-test-django в кластере Managed Kubernetes (Yandex Cloud).
+
+
+## Ссылки проекта
+* **Работающая версия сайта:** [https://edu-daniil-vdovin.yc-sirius-dev.pelid.team/](https://edu-daniil-vdovin.yc-sirius-dev.pelid.team/)
+
 ## Как задеплоить код
 
 В этом окружении трафик обрабатывается внешним балансировщиком Yandex ALB и направляется в локальный Nginx (`main-nginx`).
@@ -44,4 +52,27 @@ docker build -t логин_аккаунта/k8s-test-django:$HASH backend_main_d
 
 ```powershell
 docker push логин_аккаунта/k8s-test-django:$HASH
+```
+
+## Инструкции по деплою в кластер
+
+Все манифесты разделены по компонентам в директории k8s/yc-edu-daniil-vdovin/.
+
+1. **Подготовка конфигурации и секретов:**
+   Убедитесь, что в кластере созданы файлы с настройками.
+
+```bash
+kubectl create secret generic postgres --from-file=root.crt=./root.crt -n edu-daniil-vdovin
+```
+
+2. Развертывание всех компонентов
+
+```bash
+kubectl apply -f k8s/yc-edu-daniil-vdovin/ --recursive -n edu-daniil-vdovin
+```
+
+3. Применение миграций базы данных:
+
+```bash
+kubectl exec -it deployment/django-app -n edu-daniil-vdovin -- python manage.py migrate
 ```
