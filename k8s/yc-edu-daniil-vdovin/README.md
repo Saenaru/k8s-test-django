@@ -77,3 +77,5 @@ kubectl apply -f k8s/yc-edu-daniil-vdovin/ --recursive -n edu-daniil-vdovin
 ```bash
 kubectl exec -it deployment/django-app -n edu-daniil-vdovin -- python manage.py migrate
 ```
+
+Код написан в учебных целях — это урок в курсе по Python и веб-разработке на сайте [Devman](https://dvmn.org).
